@@ -5,8 +5,7 @@ namespace CliParser;
 /// <summary>
 /// Exception thrown during parsing.
 /// </summary>
-public class ParserException : Exception
-{
+public class ParserException : Exception {
     /// <summary>
     /// Base constructor. Calls <see cref="Exception"> constructor.
     /// </summary>
@@ -17,8 +16,7 @@ public class ParserException : Exception
 /// <summary>
 /// Required option was not set by the user.
 /// </summary>
-public class RequiredOptionMissingException : ParserException
-{
+public class RequiredOptionMissingException : ParserException {
     /// <summary>
     /// Base constructor. Calls <see cref="ParserException"> constructor.
     /// </summary>
@@ -40,8 +38,7 @@ public class RequiredOptionMissingException : ParserException
 /// <summary>
 /// Two conflicting options were set by the user.
 /// </summary>
-public class ConflictingOptionsSetException : ParserException
-{
+public class ConflictingOptionsSetException : ParserException {
     /// <summary>
     /// Base constructor. Calls <see cref="ParserException"> constructor.
     /// </summary>
@@ -65,8 +62,7 @@ public class ConflictingOptionsSetException : ParserException
 /// <summary>
 /// Exception thrown during parser building.
 /// </summary>
-public class ParserBuildException : Exception
-{
+public class ParserBuildException : Exception {
     /// <summary>
     /// Base constructor. Calls <see cref="Exception"> constructor.
     /// </summary>
@@ -77,8 +73,7 @@ public class ParserBuildException : Exception
 /// <summary>
 /// Two options in the same parser have the same name.
 /// </summary>
-public class NotUniqueOptionNameException : ParserBuildException
-{
+public class NotUniqueOptionNameException : ParserBuildException {
     /// <summary>
     /// Base constructor. Calls <see cref="ParserBuildException"> constructor.
     /// </summary>
@@ -95,8 +90,7 @@ public class NotUniqueOptionNameException : ParserBuildException
 /// <summary>
 /// Option of a given name not found in the given parser.
 /// </summary>
-public class OptionNotFoundException : ParserBuildException
-{
+public class OptionNotFoundException : ParserBuildException {
     /// <summary>
     /// Sets base message containing the name the invalid name of an option.
     /// </summary>
@@ -107,8 +101,7 @@ public class OptionNotFoundException : ParserBuildException
 /// <summary>
 /// Two options have conflicting aliases.
 /// </summary>
-public class ConflictingOptionAliasesException : ParserBuildException
-{
+public class ConflictingOptionAliasesException : ParserBuildException {
     /// <summary>
     /// Base constructor. Calls <see cref="ParserBuildException"> constructor.
     /// </summary>
@@ -128,8 +121,7 @@ public class ConflictingOptionAliasesException : ParserBuildException
 /// <summary>
 /// Given alias is invalid.
 /// </summary>
-public class BadAliasException : ParserBuildException
-{
+public class BadAliasException : ParserBuildException {
     /// <summary>
     /// Base constructor. Calls <see cref="ParserBuildException"> constructor.
     /// </summary>

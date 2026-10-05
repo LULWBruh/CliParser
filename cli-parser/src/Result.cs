@@ -7,7 +7,7 @@ public abstract class ParseResult {
     internal ParseResult(string helpString) {
         HelpString = helpString;
     }
-    
+
     /// <summary>
     /// Represents the help message string, typically displayed to the user
     /// with information about command usage, available options, and their descriptions.
@@ -19,8 +19,7 @@ public abstract class ParseResult {
 /// Result of "--help".
 /// </summary>
 public sealed class HelpResult : ParseResult {
-    internal HelpResult(string helpString) : base(helpString) {
-    }
+    internal HelpResult(string helpString) : base(helpString) { }
 }
 
 /// <summary>
@@ -171,5 +170,4 @@ public sealed partial class OptionResult {
             return false;
         }
     }
-
 }
