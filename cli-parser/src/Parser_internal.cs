@@ -9,8 +9,9 @@ using System.Threading.Tasks;
 namespace CliParser;
 
 public sealed partial class Parser {
-    // private const string LONG_HELP_OPTION = "--help";
-    // private const string SHORT_HELP_OPTION = "-H";
-    // private const string LONG_VERSION_OPTION = "--version";
-    // private const string SHORT_VERSION_OPTION = "-V";
+    internal const string PLAIN_SEPARATOR = "--";
+    internal const string LONG_HELP_OPTION = "help";
+    internal const string LONG_VERSION_OPTION = "version";
+    internal const char SHORT_HELP_OPTION = 'H';
+    internal const char SHORT_VERSION_OPTION = 'V';
 }
