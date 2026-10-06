@@ -1,4 +1,6 @@
-﻿namespace CliParser;
+﻿using System.Text;
+
+namespace CliParser;
 
 public sealed partial class Parser {
     private Dictionary<string, Option> _options = new();
@@ -9,9 +11,16 @@ public sealed partial class Parser {
     private Dictionary<string, Option> _longAliases = new();
 
     public string Version { get; set; } = "1.0.0";
+    public string? AppName { get; set; } = null;
+    public bool ErrorReturnsParseInfo { get;  set; } = true;
     public bool AllPlainAfterFirst { get;  set; } = true;
-
     public bool ShowHelpOnEmptyArguments { get; set; } = false;
+    
+    public static char VersionShortAlias { get; set; } = 'V';
+    public static char HelpShortAlias { get; set; } = 'H';
+    public static string VersionLongAlias { get; set; } = "version";
+    public static string HelpLongAlias { get; set; } = "help";
+    public static string PlainSeparator { get; set; } = "--";
 
     public void AddOption(Option option) {
         if (_options.ContainsKey(option.Name)) {
@@ -83,11 +92,60 @@ public sealed partial class Parser {
         AddDependency(dependent.Name, dependency.Name);
     }
 
-    public ParseResult Parse(IReadOnlyList<string> args) {
-        throw new NotImplementedException();
-    }
-
     public ParseResult Parse(string args) {
         return Parse(args.Split([' ', '\t', '\n', '\r'], StringSplitOptions.RemoveEmptyEntries));
+    }
+
+    public string GenerateVersionString() {
+        return (AppName is not null ? AppName + " " : "") + Version;
+    }
+
+    public string GenerateHelpString() {
+        StringBuilder sb = new();
+        sb.AppendLine(AppName is not null ? AppName + " options:" : "Options:");
+        
+        foreach (var (key, value) in _options) {
+            sb.AppendLine("  " + key + (value.Required ? " (required):" : ":"));
+            if (value.Description is not null) {
+                sb.AppendLine("    Description: " + value.Description);
+            }
+            
+            sb.Append("    Aliases:    ");
+            foreach (var alias in value.ShortAliases) {
+                sb.Append(" -" + alias);
+            }
+            foreach (var alias in value.LongAliases) {
+                sb.Append(" --" + alias);
+            }
+            sb.AppendLine();
+
+            if (value.Parameters.Count > 0) {
+                sb.Append("    Parameters: ");
+                foreach (var parameter in value.Parameters) {
+                    sb.Append(" " + parameter.Name());
+                }
+                sb.AppendLine();
+            }
+
+            sb.Append("    Dependencies: ");
+            if (_dependencies.TryGetValue(key, out var dependencies)) {
+                foreach (var dependency in dependencies) {
+                    sb.Append(" " + dependency);
+                }
+                sb.AppendLine();
+            }
+            sb.AppendLine();
+        }
+
+        sb.Append("\nConflicting option groups: ");
+        foreach (var conflicts in _conflicts) {
+            sb.Append("\n  ");
+            foreach (var conflict in conflicts) {
+                sb.Append(conflict + " ");
+            }
+        }
+        sb.AppendLine();
+
+        return sb.ToString();
     }
 }

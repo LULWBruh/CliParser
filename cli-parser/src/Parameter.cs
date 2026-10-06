@@ -1,13 +1,13 @@
 ﻿namespace CliParser;
 
 public abstract partial class Parameter {
-    public static CustomParameter<T> CustomParameter<T>(Func<string, T> parsingFunction, T? defaultValue = default,
+    public static CustomParameter<T> CustomParameter<T>(Func<string, T> parsingFunction,
         Func<T, bool>? customValidation = null) {
-        return new CustomParameter<T>(parsingFunction, defaultValue, customValidation);
+        return new CustomParameter<T>(parsingFunction, customValidation);
     }
 
-    public static BoolParameter BoolParameter(bool defaultValue = true) {
-        return new BoolParameter(defaultValue);
+    public static BoolParameter BoolParameter() {
+        return new BoolParameter();
     }
 
     public static EnumParameter EnumParameter(string firstValue, params string[] values) {
@@ -15,19 +15,23 @@ public abstract partial class Parameter {
     }
 
     public static EnumParameter EnumParameter(Type type, bool caseSensitive = false) {
-        if (type == null) throw new ArgumentNullException(nameof(type));
-        if (!type.IsEnum) throw new InvalidOperationException($"{nameof(type)} is not enumerable.");
-        else return new EnumParameter(type, caseSensitive);
+        if (type == null) {
+            throw new ArgumentNullException(nameof(type));
+        }
+        if (!type.IsEnum) {
+            throw new InvalidOperationException($"{nameof(type)} is not enumerable.");
+        }
+        return new EnumParameter(type, caseSensitive);
     }
 
-    public static IntParameter IntParameter(int defaultValue = 0, int min = int.MinValue, int max = int.MaxValue,
+    public static IntParameter IntParameter(int min = int.MinValue, int max = int.MaxValue,
         Func<int, bool>? customValidation = null) {
-        return new IntParameter(defaultValue, min, max, customValidation);
+        return new IntParameter(min, max, customValidation);
     }
 
-    public static StringParameter StringParameter(string defaultValue = "", Func<string, bool>? customValidation = null,
+    public static StringParameter StringParameter(Func<string, bool>? customValidation = null,
         string? regexValidation = null) {
-        return new StringParameter(defaultValue, customValidation, regexValidation);
+        return new StringParameter(customValidation, regexValidation);
     }
 }
 

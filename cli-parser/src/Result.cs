@@ -18,16 +18,14 @@ public sealed class ParserInfo : ParseResult {
     }
 }
 
-public sealed class ParsedData : ParseResult {
-    internal Dictionary<string, OptionResult> Options { get; private init; }
+public sealed partial class ParsedData : ParseResult {
+    internal Dictionary<string, OptionResult> Options { get; private init; } = new();
 
-    internal ParsedData(Dictionary<string, OptionResult> options, string helpString,
-        IReadOnlyList<string> plainArguments) : base(helpString) {
-        Options = options;
-        PlainArguments = plainArguments;
+    internal ParsedData(Dictionary<string, Option> options, string helpString) : base(helpString) {
+        AddAllOptions(options);
     }
 
-    public IReadOnlyList<string> PlainArguments { get; private init; }
+    public List<string> PlainArguments { get; private init; } = new();
 
     public int GetPlainCount => PlainArguments.Count;
 
@@ -47,18 +45,16 @@ public sealed class ParsedData : ParseResult {
     }
 }
 
-public sealed class OptionResult {
-    private List<object> ParameterResults { get; init; }
-
-    public OptionResult(List<object> parameterResults, bool isSet) {
-        ParameterResults = parameterResults;
-        IsSet = isSet;
-    }
-
-    public bool IsSet { get; private init; }
-
+public sealed partial class OptionResult {
+    private List<object> ParameterResults { get; init; } = new();
     public int GetParameterCount => ParameterResults.Count;
+    public bool IsSet { get; internal set; } = false;
+    internal Option _option;
 
+    internal OptionResult(Option option) {
+        _option = option;
+    }
+    
     public T GetParameter<T>(int index) {
         if (!IsSet) throw new InvalidOperationException();
         if (index < 0 || index >= ParameterResults.Count) throw new IndexOutOfRangeException();
