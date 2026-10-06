@@ -47,7 +47,7 @@ public sealed partial class Parser {
             _parsedData.Validate(_conflicts, _dependencies);
             return _parsedData;
         }
-        catch (IndexOutOfRangeException) {
+        catch {
             if (ErrorReturnsParseInfo) {
                 return new ParserInfo(GenerateHelpString(), GenerateVersionString());
             }

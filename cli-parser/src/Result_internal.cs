@@ -24,7 +24,7 @@ public sealed partial class ParsedData : ParseResult {
 
             if (dependencies.TryGetValue(key, out var dependency)) {
                 foreach (var name in dependency) {
-                    if (!Options.TryGetValue(name, out OptionResult? val) || val.IsSet) {
+                    if (!Options.TryGetValue(name, out OptionResult? val) || !val.IsSet) {
                         throw new ParserException($"Dependency for {key} not found: {name}");
                     }
                 }
