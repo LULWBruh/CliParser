@@ -12,15 +12,12 @@ public sealed partial class ParsedData : ParseResult {
         PlainArguments.Add(plain);
     }
 
-    internal void MakeSet(string name) {
-        Options[name].IsSet = true;
+    internal OptionResult StartOptionParsing(string name) {
+        var option = Options[name];
+        option.IsSet = true;
+        return option;
     }
     
-    // returns true if all parsed
-    internal bool AddParameter(string name, string parameter) {
-        return Options[name].AddParameter(parameter);
-    }
-
     internal void Validate(List<HashSet<string>> conflicts, Dictionary<string, HashSet<string>> dependencies) {
         foreach (var (key, value) in Options) {
             value.CheckValidParsing();
@@ -36,7 +33,7 @@ public sealed partial class ParsedData : ParseResult {
 
         foreach (var conflictGroup in conflicts) {
             if (conflictGroup.Count(x => Options[x].IsSet) > 1) {
-                throw new ParserException("Multiple options for the same conflict group");
+                throw new ConflictingOptionsSetException("Multiple options for the same conflict group");
             }
         }
     }
@@ -55,7 +52,7 @@ public sealed partial class OptionResult {
     
     internal void CheckValidParsing() {
         if (!IsSet && _option.Required) {
-            throw new ParserException("All parameters must be set");
+            throw new RequiredOptionMissingException("All parameters must be set");
         }
         if (IsSet && GetParameterCount < _option.Parameters.Count) {
             throw new ParserException("More parameters required");

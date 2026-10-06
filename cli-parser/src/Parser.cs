@@ -12,7 +12,7 @@ public sealed partial class Parser {
 
     public string Version { get; set; } = "1.0.0";
     public string? AppName { get; set; } = null;
-    public bool ErrorReturnsParseInfo { get;  set; } = true;
+    public bool ErrorReturnsParseInfo { get;  set; } = false;
     public bool AllPlainAfterFirst { get;  set; } = true;
     public bool ShowHelpOnEmptyArguments { get; set; } = false;
     

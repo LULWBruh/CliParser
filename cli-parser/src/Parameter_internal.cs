@@ -48,7 +48,7 @@ public sealed partial class EnumParameter {
 
     internal override object ParseParameter(string parameter) {
         string output = CaseSensitive ?  parameter : parameter.ToLower();
-        if (!Values.Contains(parameter)) {
+        if (!Values.Contains(output)) {
             throw  new ParserException("Parameter " + parameter + " is invalid");
         }
         return output;
